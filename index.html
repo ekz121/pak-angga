@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Single Linked List Animation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+</head>
+<body>
+    <script>
+        let nodes = [];
+        let currentX = 50;
+        let speed = 5;
+
+        class Node {
+            constructor(data) {
+                this.data = data;
+                this.next = null;
+                this.x = -100;  // Mulai dari luar layar
+                this.targetX = currentX;
+                currentX += 150;
+            }
+        }
+
+        class LinkedList {
+            constructor() {
+                this.head = null;
+            }
+
+            append(data) {
+                let newNode = new Node(data);
+                if (!this.head) {
+                    this.head = newNode;
+                } else {
+                    let current = this.head;
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = newNode;
+                }
+            }
+        }
+
+        let llist = new LinkedList();
+
+        function setup() {
+            createCanvas(800, 600);
+            llist.append(1);
+            llist.append(2);
+            llist.append(3);
+            llist.append(4);
+        }
+
+        function draw() {
+            background(255);
+            let current = llist.head;
+            while (current) {
+                // Animasi node bergerak ke posisi target
+                if (current.x < current.targetX) {
+                    current.x += speed;
+                }
+                // Gambar node
+                fill(50, 150, 255);
+                rect(current.x, height/2 - 25, 100, 50);
+                fill(255);
+                textAlign(CENTER);
+                text(current.data, current.x + 50, height/2 + 5);
+
+                // Gambar panah jika ada node berikutnya
+                if (current.next) {
+                    stroke(0);
+                    line(current.x + 100, height/2, current.x + 150, height/2);
+                    triangle(current.x + 145, height/2 - 5, current.x + 150, height/2, current.x + 145, height/2 + 5);
+                }
+                current = current.next;
+            }
+        }
+    </script>
+</body>
+</html>
